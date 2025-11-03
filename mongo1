@@ -1,0 +1,638 @@
+test> use school
+switched to db school
+school> db.students.insertMany([
+... {name:"Adarsh",age:23,course:"M.C.A",marks:89},
+... {name:"Sam",age:34,course:"B.C.A",marks:90},
+... {name:"John",age:43,course:"B.B.A",marks:91}
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69082bc407ada2273963b112'),
+    '1': ObjectId('69082bc407ada2273963b113'),
+    '2': ObjectId('69082bc407ada2273963b114')
+  }
+}
+school> db.students.find()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  }
+]
+school> db.students.find().pretty()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  }
+]
+school> db.students.find({name:"Sam"})
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  }
+]
+school> db.students.insertMany([{name:"Jack",age:40,course:"B.Tech",marks:97}])
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('69082cd107ada2273963b115') }
+}
+school> db.students.pretty()
+TypeError: db.students.pretty is not a function
+school> db.students.find().pretty()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Jack',
+    age: 40,
+    course: 'B.Tech',
+    marks: 97
+  }
+]
+school> db.students.countDocuments()
+4
+school> db.students.find()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Jack',
+    age: 40,
+    course: 'B.Tech',
+    marks: 97
+  }
+]
+school> db.students.updateOne({age:40},{$set : {name:'Priya'})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:53)
+
+> 1 | db.students.updateOne({age:40},{$set : {name:'Priya'})
+    |                                                      ^
+  2 |
+
+school> db.students.updateOne({age:40},{$set : {name:'Priya'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+school> db.students.find()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Priya',
+    age: 40,
+    course: 'B.Tech',
+    marks: 97
+  }
+]
+school> db.students.updateOne({name:"Priya"},{$set : {marks:80}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+school> db.createCollection("posts")
+{ ok: 1 }
+school> db.posts.insertMany({title:"Post Title 1",body:"Body of the post",category:"News",likes:1,tag:["news","events"],date:Date()})
+MongoInvalidArgumentError: Argument "docs" must be an array of documents
+school> db.posts.insertOne({title:"Post Title 1",body:"Body of the post",category:"News",likes:1,tag:["news","events"],date:Date()})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6908329f07ada2273963b116')
+}
+school> db.posts.insertOne({title:"Post Title 2",body:"Body of the post",category:"News",likes:1,tag:["news","events"],date:Date()})
+{
+  acknowledged: true,
+  insertedId: ObjectId('690832b507ada2273963b117')
+}
+school> db.posts.find()
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    title: 'Post Title 2',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:29 GMT+0530 (India Standard Time)'
+  }
+]
+school> db.posts.updateOne({title : 'Post Title 2'} , {$set : {likes:2}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+school> db.posts.updateOne({title : 'Post Title 2'} , {$set : {category:"Events"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+school> db.posts.insertOne({title: 'Post Title 3' , body : 'Body of the post' , category : "Technology" , likes:3 ,  tag: [ 'news', 'events' ],date: Date()})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6908357b07ada2273963b118')
+}
+school> db.posts.insertOne({title: 'Post Title 4' , body : 'Body of the post' , category : "Events" , likes:4 ,  tag: [ 'news', 'events' ],date: Date()})
+{
+  acknowledged: true,
+  insertedId: ObjectId('690835a307ada2273963b119')
+}
+school> db.posts.aggregate([{$group : {_id: "$body"}}])
+[ { _id: 'Body of the post' } ]
+school> db.posts.aggregate([{$group : {_id: "$title"}}])
+[
+  { _id: 'Post Title 3' },
+  { _id: 'Post Title 4' },
+  { _id: 'Post Title 2' },
+  { _id: 'Post Title 1' }
+]
+school> db.posts.aggregate([{$group : {_id: "$category"}}])
+[ { _id: 'News' }, { _id: 'Events' }, { _id: 'Technology' } ]
+school> db.posts.aggregate([{$group : {_id: "$tag"}}])
+[ { _id: [ 'news', 'events' ] } ]
+school> db.students.find()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Priya',
+    age: 40,
+    course: 'B.Tech',
+    marks: 80
+  }
+]
+school> db.students.aggregate([{limit:1}])
+MongoServerError[Location40324]: Unrecognized pipeline stage name: 'limit'
+school> db.students.aggregate([{$limit:1}])
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  }
+]
+school> db.students.find()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Priya',
+    age: 40,
+    course: 'B.Tech',
+    marks: 80
+  }
+]
+school> db.students.find()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Priya',
+    age: 40,
+    course: 'B.Tech',
+    marks: 80
+  }
+]
+school> db.posts.find()
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    title: 'Post Title 2',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 2,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:29 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    title: 'Post Title 3',
+    body: 'Body of the post',
+    category: 'Technology',
+    likes: 3,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:19 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    title: 'Post Title 4',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 4,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:59 GMT+0530 (India Standard Time)'
+  }
+]
+school> db.posts.aggregate({$limit:1})
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  }
+]
+school> db.students.aggregate({$limit:1})
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  }
+]
+school> db.posts.aggregate({$group: {_id : '$title'}})
+[
+  { _id: 'Post Title 3' },
+  { _id: 'Post Title 2' },
+  { _id: 'Post Title 1' },
+  { _id: 'Post Title 4' }
+]
+school> db.posts.aggregate([{$project : {"title":1,"body":1,"likes":1},{$limit:4}])
+Uncaught:
+SyntaxError: Unexpected token (1:63)
+
+> 1 | db.posts.aggregate([{$project : {"title":1,"body":1,"likes":1},{$limit:4}])
+    |                                                                ^
+  2 |
+
+school> db.posts.aggregate([{$project : {"title":"Post Title 1","body":"Body of the post","likes":1},{$limit:4}])
+Uncaught:
+SyntaxError: Unexpected token (1:93)
+
+> 1 | db.posts.aggregate([{$project : {"title":"Post Title 1","body":"Body of the post","likes":1},{$limit:4}])
+    |                                                                                              ^
+  2 |
+
+school> db.posts.aggregate([{$project:{title:1,body:1,likes:1}},{$limit:5}])
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    likes: 1
+  },
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    title: 'Post Title 2',
+    body: 'Body of the post',
+    likes: 2
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    title: 'Post Title 3',
+    body: 'Body of the post',
+    likes: 3
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    title: 'Post Title 4',
+    body: 'Body of the post',
+    likes: 4
+  }
+]
+school> db.students.find()
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A',
+    marks: 89
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A',
+    marks: 90
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A',
+    marks: 91
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Priya',
+    age: 40,
+    course: 'B.Tech',
+    marks: 80
+  }
+]
+school> db.posts.countDocuments()
+4
+school> db.students.([{$project:{name:1,age:1,course:1}},{limit:4}])
+Uncaught:
+SyntaxError: Unexpected token (1:12)
+
+> 1 | db.students.([{$project:{name:1,age:1,course:1}},{limit:4}])
+    |             ^
+  2 |
+
+school> db.students.([{$project:{name:1,age:1,course:1}},{$limit:4}])
+Uncaught:
+SyntaxError: Unexpected token (1:12)
+
+> 1 | db.students.([{$project:{name:1,age:1,course:1}},{$limit:4}])
+    |             ^
+  2 |
+
+school> db.students.aggregate([{$project:{name:1,age:1,course:1}},{$limit:4}])
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A'
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A'
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A'
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Priya',
+    age: 40,
+    course: 'B.Tech'
+  }
+]
+school> db.students.aggregate([{$project:{name:1,age:2,course:1}},{$limit:4}])
+[
+  {
+    _id: ObjectId('69082bc407ada2273963b112'),
+    name: 'Adarsh',
+    age: 23,
+    course: 'M.C.A'
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b113'),
+    name: 'Sam',
+    age: 34,
+    course: 'B.C.A'
+  },
+  {
+    _id: ObjectId('69082bc407ada2273963b114'),
+    name: 'John',
+    age: 43,
+    course: 'B.B.A'
+  },
+  {
+    _id: ObjectId('69082cd107ada2273963b115'),
+    name: 'Priya',
+    age: 40,
+    course: 'B.Tech'
+  }
+]
+school> db.posts.find()
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    title: 'Post Title 2',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 2,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:29 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    title: 'Post Title 3',
+    body: 'Body of the post',
+    category: 'Technology',
+    likes: 3,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:19 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    title: 'Post Title 4',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 4,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:59 GMT+0530 (India Standard Time)'
+  }
+]
+school> db.posts.aggregate([{$project:{name:1,age:2,course:1}},{$limit:4}])
+[
+  { _id: ObjectId('6908329f07ada2273963b116') },
+  { _id: ObjectId('690832b507ada2273963b117') },
+  { _id: ObjectId('6908357b07ada2273963b118') },
+  { _id: ObjectId('690835a307ada2273963b119') }
+]
