@@ -1,0 +1,76 @@
+test> use school
+switched to db school
+school> db.posts.find()
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    title: 'Post Title 2',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 2,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:29 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    title: 'Post Title 3',
+    body: 'Body of the post',
+    category: 'Technology',
+    likes: 3,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:19 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    title: 'Post Title 4',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 4,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:59 GMT+0530 (India Standard Time)'
+  }
+]
+school> db.posts.aggregate([{$group : {_id:"$title"}}])
+[
+  { _id: 'Post Title 2' },
+  { _id: 'Post Title 3' },
+  { _id: 'Post Title 1' },
+  { _id: 'Post Title 4' }
+]
+school> db.posts.aggregate([{$group : {_id:"$likes"}}])
+[ { _id: 4 }, { _id: 3 }, { _id: 2 }, { _id: 1 } ]
+school> db.posts.insertOne({title:"Post Title 5" , body:"Body of the post" , category:'Time' , likes:5 ,  tag: [ 'news', 'events' ], date: Date()})
+{
+  acknowledged: true,
+  insertedId: ObjectId('690980297c995d909363b112')
+}
+school> db.posts.aggregate([{$group : {_id:"$title"}}])
+[
+  { _id: 'Post Title 1' },
+  { _id: 'Post Title 4' },
+  { _id: 'Post Title 5' },
+  { _id: 'Post Title 2' },
+  { _id: 'Post Title 3' }
+]
+school> db.posts.aggregate([{$limit:1}])
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  }
+]
+school>
