@@ -1,0 +1,184 @@
+test> use school
+switched to db school
+school> db.posts.find()
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    title: 'Post Title 2',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 2,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:29 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    title: 'Post Title 3',
+    body: 'Body of the post',
+    category: 'Technology',
+    likes: 3,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:19 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    title: 'Post Title 4',
+    body: 'Body of the post',
+    category: 'Events',
+    likes: 4,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:24:59 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('690980297c995d909363b112'),
+    title: 'Post Title 5',
+    body: 'Body of the post',
+    category: 'Time',
+    likes: 5,
+    tag: [ 'news', 'events' ],
+    date: 'Tue Nov 04 2025 09:55:13 GMT+0530 (India Standard Time)'
+  }
+]
+school> db.posts.aggregate([{$limit:1}])
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    title: 'Post Title 1',
+    body: 'Body of the post',
+    category: 'News',
+    likes: 1,
+    tag: [ 'news', 'events' ],
+    date: 'Mon Nov 03 2025 10:12:07 GMT+0530 (India Standard Time)'
+  }
+]
+school> db.posts.aggregate([{$group:{_id:"$category"}}])
+[
+  { _id: 'News' },
+  { _id: 'Time' },
+  { _id: 'Events' },
+  { _id: 'Technology' }
+]
+school> db.posts.aggregate([{$project:{"body":1,"likes":1,"tag":1},{$limit:5}])
+Uncaught:
+SyntaxError: Unexpected token (1:59)
+
+> 1 | db.posts.aggregate([{$project:{"body":1,"likes":1,"tag":1},{$limit:5}])
+    |                                                            ^
+  2 |
+
+school> db.posts.aggregate([{$project:{"body":1,"likes":1,"tag":1}},{$limit:5}])
+[
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    body: 'Body of the post',
+    likes: 1,
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    body: 'Body of the post',
+    likes: 2,
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    body: 'Body of the post',
+    likes: 3,
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    body: 'Body of the post',
+    likes: 4,
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('690980297c995d909363b112'),
+    body: 'Body of the post',
+    likes: 5,
+    tag: [ 'news', 'events' ]
+  }
+]
+school> db.posts.aggregate([{$sort:{"body":-1}},{$project:{"tag":1,"category":1}},{$limit:4}])
+[
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    category: 'Events',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    category: 'Events',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    category: 'News',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    category: 'Technology',
+    tag: [ 'news', 'events' ]
+  }
+]
+school> db.posts.aggregate([{$sort:{"body":2}},{$project:{"tag":1,"category":1}},{$limit:4}])
+MongoServerError[Location15975]: $sort key ordering must be 1 (for ascending) or -1 (for descending)
+school> db.posts.aggregate([{$sort:{"body":1}},{$project:{"tag":1,"category":1}},{$limit:4}])
+[
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    category: 'Events',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    category: 'Events',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    category: 'News',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    category: 'Technology',
+    tag: [ 'news', 'events' ]
+  }
+]
+school> db.posts.aggregate([{$match : {property_type:"date"}},{$limit:3},{$project:{"category":1,"tag":1,"body":1}}])
+
+school> db.posts.aggregate([{$match : {property_type:"likes"}},{$limit:3},{$project:{"category":1,"tag":1,"body":1}}])
+
+school> db.posts.aggregate([{$sort:{"body":1}},{$project:{"tag":2,"category":2}},{$limit:4}])
+[
+  {
+    _id: ObjectId('690832b507ada2273963b117'),
+    category: 'Events',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('690835a307ada2273963b119'),
+    category: 'Events',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6908329f07ada2273963b116'),
+    category: 'News',
+    tag: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6908357b07ada2273963b118'),
+    category: 'Technology',
+    tag: [ 'news', 'events' ]
+  }
